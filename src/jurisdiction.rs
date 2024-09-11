@@ -39,15 +39,15 @@ impl FromStr for Jurisdiction {
     type Err = anyhow::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if let Ok(alpha2) = serde_plain::from_str::<Alpha2>(s) {
-            Ok(Jurisdiction::from(alpha2))
-        } else if let Ok(alpha3) = serde_plain::from_str::<Alpha3>(s) {
-            Ok(Jurisdiction::from(alpha3))
-        } else {
-            Err(format_err!(
-                "unrecognized ISO 3166 alpha country code: {}",
-                s
-            ))
+        let err = || format_err!("unrecognized ISO 3166 alpha country code: {s}");
+        match s.len() {
+            2 => serde_plain::from_str::<Alpha2>(s)
+                .map(From::from)
+                .map_err(|_| err()),
+            3 => serde_plain::from_str::<Alpha3>(s)
+                .map(From::from)
+                .map_err(|_| err()),
+            _ => Err(err()),
         }
     }
 }
