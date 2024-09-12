@@ -87,7 +87,7 @@ impl Jurisdiction {
         self.definition.alpha2
     }
 
-    /// Return the two letter [Alpha3] representation for this `Jurisdiction`.
+    /// Return the three letter [Alpha3] representation for this `Jurisdiction`.
     ///
     /// # Origin
     /// The definition is sourced from the ISO-3166 standard.
